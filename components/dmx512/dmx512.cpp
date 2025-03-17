@@ -33,7 +33,7 @@ void DMX512::dump_config() {
 }
 
 void DMX512::setup() {
-  for(int i = 0; i < DMX_MSG_SIZE; i++)
+  for(size_t i = 0; i < DMX_MSG_SIZE; i++)
     this->device_values_[i] = 0;
   if(this->pin_enable_) {
     ESP_LOGD(TAG, "Enabling RS485 module");
@@ -52,6 +52,15 @@ void DMX512::set_channel_used(uint16_t channel) {
 void DMX512::write_channel(uint16_t channel, uint8_t value) {
   ESP_LOGD(TAG, "write_channel %d: %d", channel, value);
   this->device_values_[channel] = value;
+  this->update_ = true;
+}
+
+void DMX512::write_channels(uint16_t channel_offset, uint8_t * values, uint16_t size) {
+  ESP_LOGD(TAG, "write_channels, offset(%d), size(%d)", channel_offset, size);
+  for (size_t i{0}; i<size; i++)
+  {
+    this->device_values_[channel_offset + i] = values[i];
+  }
   this->update_ = true;
 }
 

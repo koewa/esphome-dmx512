@@ -3,6 +3,9 @@
 #include "esphome/core/component.h"
 #include "esphome/components/uart/uart.h"
 #include "esphome/components/output/float_output.h"
+#include "esphome/core/color.h"
+#include "esphome/components/light/light_output.h"
+#include "esphome/components/light/addressable_light.h"
 
 static const uint16_t UPDATE_INTERVAL_MS = 500;
 static const uint16_t DMX_MAX_CHANNEL = 512;
@@ -50,6 +53,7 @@ class DMX512 : public Component {
   float get_setup_priority() const override { return setup_priority::BUS; }
 
   void write_channel(uint16_t channel, uint8_t value);
+  void write_channels(uint16_t channel_offset, uint8_t * values, uint16_t size);
 
  protected:
 
